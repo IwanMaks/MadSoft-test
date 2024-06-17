@@ -18,6 +18,8 @@ export const TestPage = () => {
             className="text-primary-500 text-sm absolute top-4 right-4 underline"
             onClick={() => {
               setAnswers({});
+              localStorage.setItem("madsoft-test-activeStep", String(1));
+              localStorage.setItem("madsoft-test-answers", JSON.stringify({}));
               setActiveStep(1);
             }}
           >

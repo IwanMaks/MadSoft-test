@@ -11,10 +11,12 @@ export const SingleChoiceQuestion = ({ question }: SingleChoiceQuestionProps) =>
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAnswers((prev) => {
-      return {
+      const newAnswers = {
         ...prev,
         [question.id]: e.target.value,
       };
+      localStorage.setItem("madsoft-test-answers", JSON.stringify(newAnswers));
+      return newAnswers;
     });
   };
 

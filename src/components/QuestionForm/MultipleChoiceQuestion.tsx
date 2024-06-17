@@ -13,12 +13,14 @@ export const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps
     setAnswers((prev) => {
       const prevQuestion = prev[question.id];
       const parsedArray: string[] = Array.isArray(prevQuestion) ? prevQuestion : [];
-      return {
+      const newAnswers = {
         ...prev,
         [question.id]: parsedArray.includes(optionId)
           ? parsedArray.filter((opt) => opt !== optionId)
           : [...parsedArray, optionId],
       };
+      localStorage.setItem("madsoft-test-answers", JSON.stringify(newAnswers));
+      return newAnswers;
     });
   };
 

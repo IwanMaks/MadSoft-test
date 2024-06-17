@@ -11,10 +11,12 @@ export const ShortAnswerQuestion = ({ question }: ShortAnswerQuestionProps) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAnswers((prev) => {
-      return {
+      const newAnswers = {
         ...prev,
         [question.id]: e.target.value,
       };
+      localStorage.setItem("madsoft-test-answers", JSON.stringify(newAnswers));
+      return newAnswers;
     });
   };
 
