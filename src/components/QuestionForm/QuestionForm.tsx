@@ -4,16 +4,49 @@ import { ShortAnswerQuestion } from "./ShortAnswerQuestion";
 import { SingleChoiceQuestion } from "./SingleChoiceQuestion";
 import { QUESTION_TYPES, Question } from "@/types/questions";
 import { LongAnswerQuestion } from "./LongAnswerQuestion";
-import { SetStateType } from "@/types";
+import { FormEvent, useContext, useEffect } from "react";
+import { TestContext } from "@/store/test";
+import { TestContextType } from "@/types";
+import { validateAnswers } from "@/helpers/validation";
 
-interface QuestionFormProps {
-  activeStep: number;
-  setActiveStep: SetStateType<number>;
-}
+export const QuestionForm = () => {
+  const { activeStep, setActiveStep, answers, setAnswers } =
+    useContext<TestContextType>(TestContext);
 
-export const QuestionForm = ({ activeStep, setActiveStep }: QuestionFormProps) => {
-  const handleNext = () => {
-    setActiveStep((prev: number) => prev + 1);
+  useEffect(() => {
+    const savedIndex = localStorage.getItem("currentQuestionIndex");
+    const savedAnswers = localStorage.getItem("answers");
+
+    if (savedIndex) {
+      setActiveStep(Number(savedIndex));
+    }
+
+    if (savedAnswers) {
+      setAnswers(JSON.parse(savedAnswers));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("madsoft-test-activeStep", String(activeStep - 1));
+    localStorage.setItem("madsoft-test-answers", JSON.stringify(answers));
+  }, [activeStep, answers]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (validateAnswers(answers, questions[activeStep - 1].id)) {
+      if (activeStep < questions.length) {
+        setActiveStep((prev: number) => prev + 1);
+      } else {
+        if (Object.keys(answers).length === questions.length) {
+          alert("Ура, вы тест закончили");
+        } else {
+          alert("Вы на что-то не ответили");
+        }
+      }
+    } else {
+      alert("Нужно ответить на вопрос");
+    }
   };
 
   const handlePrev = () => {
@@ -56,9 +89,9 @@ export const QuestionForm = ({ activeStep, setActiveStep }: QuestionFormProps) =
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       {renderQuestion(questions[activeStep - 1], activeStep - 1)}
-      <div className="w-full flex items-center justify-end space-x-4 mt-6">
+      <div className="w-full flex items-center justify-end space-x-4 mt-4">
         {activeStep !== 1 && (
           <button
             type="button"
@@ -69,13 +102,12 @@ export const QuestionForm = ({ activeStep, setActiveStep }: QuestionFormProps) =
           </button>
         )}
         <button
-          type="button"
-          onClick={handleNext}
+          type="submit"
           className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
         >
           {activeStep === questions.length ? "Завершить" : "Ответить"}
         </button>
       </div>
-    </div>
+    </form>
   );
 };

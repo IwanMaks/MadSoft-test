@@ -1,39 +1,45 @@
+import { TestContext } from "@/store/test";
 import { Question } from "@/types/questions";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext } from "react";
 
 interface SingleChoiceQuestionProps {
   question: Question;
 }
 
 export const SingleChoiceQuestion = ({ question }: SingleChoiceQuestionProps) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const { answers, setAnswers } = useContext(TestContext);
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(e.target.value);
+    setAnswers((prev) => {
+      return {
+        ...prev,
+        [question.id]: e.target.value,
+      };
+    });
   };
 
   return (
     <fieldset>
       <legend className="text-lg font-semibold leading-6 text-gray-900">{question.title}</legend>
-      <div className="mt-6 space-y-3">
-        {question.options?.map((option, index) => (
+      <div className="mt-4 space-y-3">
+        {question.options?.map((option) => (
           <div
-            key={"single-choice-option-" + index}
+            key={"single-choice-option-" + option.id}
             className="flex items-center"
           >
             <input
-              id={"single-" + index}
+              id={"single-option-" + option.id + "-question-" + question.id}
               type="radio"
               className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600 cursor-pointer"
               onChange={handleOptionChange}
-              checked={selectedOption === option}
-              value={option}
+              checked={answers[question.id] === option.id}
+              value={option.id}
             />
             <label
-              htmlFor={"single-" + index}
+              htmlFor={"single-option-" + option.id + "-question-" + question.id}
               className="ml-3 block text-base font-medium leading-6 text-gray-900 cursor-pointer"
             >
-              {option}
+              {option.value}
             </label>
           </div>
         ))}

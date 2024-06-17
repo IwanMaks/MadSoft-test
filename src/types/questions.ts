@@ -6,7 +6,20 @@ export const QUESTION_TYPES = {
 } as const;
 
 export interface Question {
+  id: string;
   type: (typeof QUESTION_TYPES)[keyof typeof QUESTION_TYPES];
   title: string;
-  options?: string[];
+  options?: Option[];
+}
+
+export interface Option {
+  id: string;
+  value: string;
+}
+
+export interface TestInfo {
+  id: string;
+  organizedByTime: boolean;
+  time?: number;
+  questions: Question[];
 }

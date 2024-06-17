@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 
-export const Timer = () => {
-  const [timeLeft, setTimeLeft] = useState<number>(60 * 15); // 20 minutes
+interface TimerProps {
+  initTime: number;
+}
+
+export const Timer = ({ initTime }: TimerProps) => {
+  const [timeLeft, setTimeLeft] = useState<number>(() => {
+    const savedTime = localStorage.getItem("madsoft-test-timeLeft");
+    return savedTime ? Number(savedTime) : initTime;
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft((prevTime) => {
+        const newTime = prevTime > 0 ? prevTime - 1 : 0;
+        localStorage.setItem("madsoft-test-timeLeft", String(newTime));
+        return newTime;
+      });
     }, 1000);
 
     return () => clearInterval(timer);

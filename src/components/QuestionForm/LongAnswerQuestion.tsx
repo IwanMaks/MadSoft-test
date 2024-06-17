@@ -1,15 +1,21 @@
+import { TestContext } from "@/store/test";
 import { Question } from "@/types/questions";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext } from "react";
 
 interface LongAnswerQuestionProps {
   question: Question;
 }
 
 export const LongAnswerQuestion = ({ question }: LongAnswerQuestionProps) => {
-  const [answer, setAnswer] = useState<string>("");
+  const { answers, setAnswers } = useContext(TestContext);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setAnswer(e.target.value);
+    setAnswers((prev) => {
+      return {
+        ...prev,
+        [question.id]: e.target.value,
+      };
+    });
   };
 
   return (
@@ -20,13 +26,13 @@ export const LongAnswerQuestion = ({ question }: LongAnswerQuestionProps) => {
       >
         {question.title}
       </label>
-      <div className="mt-6">
+      <div className="mt-4">
         <textarea
           rows={5}
           id="long-answer"
           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           placeholder="Ваш ответ..."
-          value={answer}
+          value={answers[question.id] || ""}
           onChange={handleChange}
         />
       </div>

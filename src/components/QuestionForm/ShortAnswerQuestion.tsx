@@ -1,15 +1,21 @@
+import { TestContext } from "@/store/test";
 import { Question } from "@/types/questions";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext } from "react";
 
 interface ShortAnswerQuestionProps {
   question: Question;
 }
 
 export const ShortAnswerQuestion = ({ question }: ShortAnswerQuestionProps) => {
-  const [answer, setAnswer] = useState<string>("");
+  const { answers, setAnswers } = useContext(TestContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAnswer(e.target.value);
+    setAnswers((prev) => {
+      return {
+        ...prev,
+        [question.id]: e.target.value,
+      };
+    });
   };
 
   return (
@@ -20,13 +26,13 @@ export const ShortAnswerQuestion = ({ question }: ShortAnswerQuestionProps) => {
       >
         {question.title}
       </label>
-      <div className="mt-6">
+      <div className="mt-4">
         <input
           type="text"
           id="short-answer"
           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-base sm:leading-6"
           placeholder="Ваш ответ..."
-          value={answer}
+          value={answers[question.id] || ""}
           onChange={handleChange}
         />
       </div>
