@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { SetStateType } from "@/types";
+import { useEffect } from "react";
 
 interface TimerProps {
-  initTime: number;
+  timeLeft: number;
+  setTimeLeft: SetStateType<number>;
 }
 
-export const Timer = ({ initTime }: TimerProps) => {
-  const [timeLeft, setTimeLeft] = useState<number>(() => {
-    const savedTime = localStorage.getItem("madsoft-test-timeLeft");
-    return savedTime ? Number(savedTime) : initTime;
-  });
-
+export const Timer = ({ timeLeft, setTimeLeft }: TimerProps) => {
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
