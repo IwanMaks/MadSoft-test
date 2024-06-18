@@ -54,6 +54,6 @@ export const questions: Question[] = [
 export const testInfo: TestInfo = {
   id: "1",
   organizedByTime: true,
-  time: 12,
+  time: 1200,
   questions: questions,
 };
