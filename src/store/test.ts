@@ -8,4 +8,7 @@ export const TestContext = createContext<TestContextType>({
   setAnswers: () => {},
   timeLeft: 0,
   setTimeLeft: () => {},
+  restartTest: () => {},
+  finished: false,
+  setFinished: () => {},
 });

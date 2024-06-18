@@ -13,12 +13,17 @@ import { CompliteTestModal, Toast } from "../UI";
 export const QuestionForm = () => {
   const [showValidationToast, setShowValidationToast] = useState(false);
   const [showCompliteModal, setShowCompliteModal] = useState(false);
-  const { activeStep, setActiveStep, answers, setAnswers } =
+  const { activeStep, setActiveStep, answers, setAnswers, setFinished, finished } =
     useContext<TestContextType>(TestContext);
 
   useEffect(() => {
     const savedIndex = localStorage.getItem("madsoft-test-activeStep");
     const savedAnswers = localStorage.getItem("madsoft-test-answers");
+    const savedFinished = localStorage.getItem("madsoft-test-finished");
+
+    if (savedFinished) {
+      setFinished(savedFinished.toLowerCase() === "true");
+    }
 
     if (savedIndex) {
       setActiveStep(Number(savedIndex));
@@ -41,6 +46,8 @@ export const QuestionForm = () => {
         if (Object.keys(answers).length === questions.length) {
           setShowValidationToast(false);
           setShowCompliteModal(true);
+          setFinished(true);
+          localStorage.setItem("madsoft-test-finished", String(true));
         } else {
           setShowValidationToast(true);
         }
@@ -97,7 +104,7 @@ export const QuestionForm = () => {
         setShow={setShowValidationToast}
       />
       <CompliteTestModal
-        open={showCompliteModal}
+        open={finished || showCompliteModal}
         setOpen={setShowCompliteModal}
       />
       <form onSubmit={handleSubmit}>

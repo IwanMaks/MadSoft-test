@@ -1,23 +1,22 @@
-import { SetStateType } from "@/types";
-import { useEffect } from "react";
+import { TestContext } from "@/store/test";
+import { useContext, useEffect } from "react";
 
-interface TimerProps {
-  timeLeft: number;
-  setTimeLeft: SetStateType<number>;
-}
+export const Timer = () => {
+  const { timeLeft, setTimeLeft, finished } = useContext(TestContext);
 
-export const Timer = ({ timeLeft, setTimeLeft }: TimerProps) => {
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        const newTime = prevTime > 0 ? prevTime - 1 : 0;
-        localStorage.setItem("madsoft-test-timeLeft", String(newTime));
-        return newTime;
-      });
-    }, 1000);
+    if (!finished) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          const newTime = prevTime > 0 ? prevTime - 1 : 0;
+          localStorage.setItem("madsoft-test-timeLeft", String(newTime));
+          return newTime;
+        });
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+  }, [finished]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

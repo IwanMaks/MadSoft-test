@@ -9,4 +9,7 @@ export type TestContextType = {
   setAnswers: SetStateType<Record<string, string | string[]>>;
   timeLeft: number;
   setTimeLeft: SetStateType<number>;
+  restartTest: () => void;
+  finished: boolean;
+  setFinished: SetStateType<boolean>;
 };

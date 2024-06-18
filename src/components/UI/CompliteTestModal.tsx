@@ -1,4 +1,3 @@
-import { testInfo } from "@/constants";
 import { TestContext } from "@/store/test";
 import { SetStateType } from "@/types";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
@@ -11,19 +10,7 @@ interface CompliteTestModalProps {
 }
 
 export const CompliteTestModal = ({ open, setOpen }: CompliteTestModalProps) => {
-  const { setAnswers, setActiveStep, setTimeLeft } = useContext(TestContext);
-
-  const restartTest = () => {
-    setAnswers({});
-    setActiveStep(1);
-    setTimeLeft(testInfo.organizedByTime ? testInfo.time || 0 : 0);
-    localStorage.setItem("madsoft-test-activeStep", String(1));
-    localStorage.setItem("madsoft-test-answers", JSON.stringify({}));
-    localStorage.setItem(
-      "madsoft-test-timeLeft",
-      String(testInfo.organizedByTime ? testInfo.time : 0),
-    );
-  };
+  const { restartTest } = useContext(TestContext);
 
   return (
     <Transition show={open}>
