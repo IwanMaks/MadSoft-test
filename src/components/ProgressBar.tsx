@@ -1,10 +1,9 @@
 import { questions } from "@/constants";
+import { TestContext } from "@/store/test";
+import { useContext } from "react";
 
-interface ProgressBarProps {
-  currentStep: number;
-}
-
-export const ProgressBar = ({ currentStep }: ProgressBarProps) => {
+export const ProgressBar = () => {
+  const { activeStep: currentStep } = useContext(TestContext);
   const totalSteps = questions.length;
 
   return (

@@ -1,8 +1,10 @@
 import { TestContext } from "@/store/test";
+import { TimerContext } from "@/store/timer";
 import { useContext, useEffect } from "react";
 
 export const Timer = () => {
-  const { timeLeft, setTimeLeft, finished } = useContext(TestContext);
+  const { finished } = useContext(TestContext);
+  const { timeLeft, setTimeLeft } = useContext(TimerContext);
 
   useEffect(() => {
     if (!finished) {

@@ -6,8 +6,6 @@ export const TestContext = createContext<TestContextType>({
   setActiveStep: () => {},
   answers: {},
   setAnswers: () => {},
-  timeLeft: 0,
-  setTimeLeft: () => {},
   restartTest: () => {},
   finished: false,
   setFinished: () => {},
