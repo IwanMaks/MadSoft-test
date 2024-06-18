@@ -8,3 +8,4 @@ export {
   ShortAnswerQuestion,
   SingleChoiceQuestion,
 } from "./QuestionForm";
+export { Toast, CompliteTestModal } from "./UI";

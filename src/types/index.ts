@@ -7,4 +7,6 @@ export type TestContextType = {
   setActiveStep: SetStateType<number>;
   answers: Record<string, string | string[]>;
   setAnswers: SetStateType<Record<string, string | string[]>>;
+  timeLeft: number;
+  setTimeLeft: SetStateType<number>;
 };

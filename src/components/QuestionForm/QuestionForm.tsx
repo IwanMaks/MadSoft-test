@@ -8,10 +8,11 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import { TestContext } from "@/store/test";
 import { TestContextType } from "@/types";
 import { validateAnswers } from "@/helpers/validation";
-import { Toast } from "../UI/Toast";
+import { CompliteTestModal, Toast } from "../UI";
 
 export const QuestionForm = () => {
   const [showValidationToast, setShowValidationToast] = useState(false);
+  const [showCompliteModal, setShowCompliteModal] = useState(false);
   const { activeStep, setActiveStep, answers, setAnswers } =
     useContext<TestContextType>(TestContext);
 
@@ -39,7 +40,7 @@ export const QuestionForm = () => {
       } else {
         if (Object.keys(answers).length === questions.length) {
           setShowValidationToast(false);
-          alert("Ура, вы тест закончили");
+          setShowCompliteModal(true);
         } else {
           setShowValidationToast(true);
         }
@@ -94,6 +95,10 @@ export const QuestionForm = () => {
       <Toast
         show={showValidationToast}
         setShow={setShowValidationToast}
+      />
+      <CompliteTestModal
+        open={showCompliteModal}
+        setOpen={setShowCompliteModal}
       />
       <form onSubmit={handleSubmit}>
         {renderQuestion(questions[activeStep - 1], activeStep - 1)}
